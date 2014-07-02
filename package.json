@@ -1,6 +1,6 @@
 {
   "name": "glsl-transitions",
-  "version": "0.0.0",
+  "version": "2014.7.2",
   "description": "Collection of GLSL Transitions Effects based on glsl-transition",
   "keywords": [
     "glsl",
@@ -17,8 +17,5 @@
     "type": "git",
     "url": "https://github.com/gre/glsl-transitions.git"
   },
-  "license": "MIT",
-  "dependencies": {
-    "glsl-transition": "0.4.x"
-  }
+  "license": "MIT"
 }
