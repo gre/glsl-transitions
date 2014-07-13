@@ -17,5 +17,12 @@
     "type": "git",
     "url": "https://github.com/gre/glsl-transitions.git"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "browserify": "4.2.x",
+    "uglify-js": "2.4.x"
+  },
+  "scripts": {
+    "build": "echo '/*! glsl-transitions '`node -e 'console.log(require(\"./package.json\").version)'`' */' > build/glsl-transitions.js && browserify index.js --standalone GlslTransitions | uglifyjs -c >> build/glsl-transitions.js"
+  }
 }
