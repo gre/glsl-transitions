@@ -1,1 +1,1 @@
-module.exports = require("./transitions.json");
+module.exports = require("./transitions.min.json");
