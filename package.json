@@ -1,7 +1,7 @@
 {
   "name": "glsl-transitions",
   "version": "2014.7.16",
-  "description": "Collection of GLSL Transitions Effects based on glsl-transition",
+  "description": "A collection of GLSL Transitions created on GLSL.io",
   "keywords": [
     "glsl",
     "webgl",
