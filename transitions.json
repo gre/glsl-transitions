@@ -1,4 +1,13 @@
 [ {
+  "id" : "f86f72429821b148d0ce",
+  "owner" : "yongxu",
+  "html_url" : "https://gist.github.com/f86f72429821b148d0ce",
+  "created_at" : "2014-08-24T22:51:44Z",
+  "updated_at" : "2014-08-24T22:53:58Z",
+  "name" : "pow distortion",
+  "glsl" : "#ifdef GL_ES\nprecision highp float;\n#endif\nuniform sampler2D from, to;\nuniform float progress;\nuniform vec2 resolution;\n\nvoid main() {\n  vec2 p = gl_FragCoord.xy / resolution.xy;\n  vec4 t1=texture2D(from,vec2(pow(p.x,1.-progress),pow(p.y,1.-progress)));\n  vec4 t2=texture2D(to,vec2(pow(p.x,progress),pow(p.y,progress)));\n  gl_FragColor = mix(t1, t2, progress);\n}",
+  "uniforms" : { }
+}, {
   "id" : "d1f891c5585fc40b55ea",
   "owner" : "MemoryStomp",
   "html_url" : "https://gist.github.com/d1f891c5585fc40b55ea",
