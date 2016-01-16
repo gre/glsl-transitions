@@ -1,4 +1,14 @@
 [ {
+  "id" : "948e99b1800e81ad909a",
+  "name" : "Atmospheric Slideshow",
+  "owner" : "dycm8009",
+  "glsl" : "#ifdef GL_ES\nprecision highp float;\n#endif\nuniform sampler2D from, to;\nuniform float progress;\nuniform vec2 resolution;\n\nvec2 zoom(vec2 uv, float amount)\n{\n  return 0.5 + ((uv - 0.5) * amount);\t\n}\n\nvoid main() {\n  vec2 uv = gl_FragCoord.xy / resolution.xy;\n  vec2 r =  2.0*vec2(gl_FragCoord.xy - 0.5*resolution.xy)/resolution.y;\n  float pro = progress / 0.8;\n  float z = (pro) * 0.2;\n  float t = 0.0;\n  if (pro > 1.0)\n  {\n    z = 0.2 + (pro - 1.0) * 5.;\n    t = clamp((progress - 0.8) / 0.07,0.0,1.0);\n  }\n  if (length(r) < 0.5+z)\n  {\n      //uv = zoom(uv, 0.9 - 0.1 * pro);\n  }\n  else if (length(r) < 0.8+z*1.5)\n  {\n      uv = zoom(uv, 1.0 - 0.15 * pro);\n      t = t * 0.5;\n  }\n  else if (length(r) < 1.2+z*2.5)\n  {\n      uv = zoom(uv, 1.0 - 0.2 * pro);\n      t = t * 0.2;\n  }\n  else\n      uv = zoom(uv, 1.0 - 0.25 * pro);\n  gl_FragColor = mix(texture2D(from, uv), texture2D(to, uv), t);\n}",
+  "uniforms" : { },
+  "html_url" : "https://gist.github.com/948e99b1800e81ad909a",
+  "created_at" : "2016-01-15T03:10:25Z",
+  "updated_at" : "2016-01-15T03:11:20Z",
+  "stars" : 0.0
+}, {
   "id" : "c08c1995cb370520f251",
   "name" : "Bounce",
   "owner" : "adrian-purser",
