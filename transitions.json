@@ -1,4 +1,18 @@
 [ {
+  "id" : "e8c83080a16cd38781f7",
+  "name" : "luminance melt",
+  "owner" : "0gust1",
+  "glsl" : "#ifdef GL_ES\nprecision highp float;\n#endif\nuniform sampler2D from, to;\nuniform float progress;\nuniform vec2 resolution;\n\n//My own first transition — based on crosshatch code (from pthrasher), using  simplex noise formula (copied and pasted)\n//-> cooler with high contrasted images (isolated dark subject on light background f.e.)\n//TODO : try to rebase it on DoomTransition (from zeh)?\n//optimizations :\n//luminance (see http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color#answer-596241)\n// Y = (R+R+B+G+G+G)/6\n//or Y = (R+R+R+B+G+G+G+G)>>3 \n\nuniform bool direction; // direction of movement :  0 : up, 1, down\nuniform float l_threshold; //luminance threshold\nuniform bool above; // does the movement takes effect above or below luminance threshold ?\n\n\n//Random function borrowed from everywhere\nfloat rand(vec2 co){\n  return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);\n}\n\n\n// Simplex noise :\n// Description : Array and textureless GLSL 2D simplex noise function.\n//      Author : Ian McEwan, Ashima Arts.\n//  Maintainer : ijm\n//     Lastmod : 20110822 (ijm)\n//     License : Copyright (C) 2011 Ashima Arts. All rights reserved.\n//               Distributed under the MIT License. See LICENSE file.\n//               https://github.com/ashima/webgl-noise\n// \n\nvec3 mod289(vec3 x) {\n  return x - floor(x * (1.0 / 289.0)) * 289.0;\n}\n\nvec2 mod289(vec2 x) {\n  return x - floor(x * (1.0 / 289.0)) * 289.0;\n}\n\nvec3 permute(vec3 x) {\n  return mod289(((x*34.0)+1.0)*x);\n}\n\nfloat snoise(vec2 v)\n  {\n  const vec4 C = vec4(0.211324865405187,  // (3.0-sqrt(3.0))/6.0\n                      0.366025403784439,  // 0.5*(sqrt(3.0)-1.0)\n                     -0.577350269189626,  // -1.0 + 2.0 * C.x\n                      0.024390243902439); // 1.0 / 41.0\n// First corner\n  vec2 i  = floor(v + dot(v, C.yy) );\n  vec2 x0 = v -   i + dot(i, C.xx);\n\n// Other corners\n  vec2 i1;\n  //i1.x = step( x0.y, x0.x ); // x0.x > x0.y ? 1.0 : 0.0\n  //i1.y = 1.0 - i1.x;\n  i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);\n  // x0 = x0 - 0.0 + 0.0 * C.xx ;\n  // x1 = x0 - i1 + 1.0 * C.xx ;\n  // x2 = x0 - 1.0 + 2.0 * C.xx ;\n  vec4 x12 = x0.xyxy + C.xxzz;\n  x12.xy -= i1;\n\n// Permutations\n  i = mod289(i); // Avoid truncation effects in permutation\n  vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))\n\t\t+ i.x + vec3(0.0, i1.x, 1.0 ));\n\n  vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);\n  m = m*m ;\n  m = m*m ;\n\n// Gradients: 41 points uniformly over a line, mapped onto a diamond.\n// The ring size 17*17 = 289 is close to a multiple of 41 (41*7 = 287)\n\n  vec3 x = 2.0 * fract(p * C.www) - 1.0;\n  vec3 h = abs(x) - 0.5;\n  vec3 ox = floor(x + 0.5);\n  vec3 a0 = x - ox;\n\n// Normalise gradients implicitly by scaling m\n// Approximation of: m *= inversesqrt( a0*a0 + h*h );\n  m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );\n\n// Compute final noise value at P\n  vec3 g;\n  g.x  = a0.x  * x0.x  + h.x  * x0.y;\n  g.yz = a0.yz * x12.xz + h.yz * x12.yw;\n  return 130.0 * dot(m, g);\n}\n\n// Simplex noise -- end\n\nfloat luminance(vec4 color){\n  //(0.299*R + 0.587*G + 0.114*B)\n  return color.r*0.299+color.g*0.587+color.b*0.114;\n}\n\nvec2 center = vec2(1.0, direction);\n\nvoid main() {\n  vec2 p = gl_FragCoord.xy / resolution.xy;\n  if (progress == 0.0) {\n    gl_FragColor = texture2D(from, p);\n  } else if (progress == 1.0) {\n    gl_FragColor = texture2D(to, p);\n  } else {\n    float x = progress;\n    float dist = distance(center, p)- progress*exp(snoise(vec2(p.x, 0.0)));\n    float r = x - rand(vec2(p.x, 0.1));\n    float m;\n    if(above){\n     m = dist <= r && luminance(texture2D(from, p))>l_threshold ? 1.0 : (progress*progress*progress);\n    }\n    else{\n     m = dist <= r && luminance(texture2D(from, p))<l_threshold ? 1.0 : (progress*progress*progress);  \n    }\n    gl_FragColor = mix(texture2D(from, p), texture2D(to, p), m);    \n  }\n}",
+  "uniforms" : {
+    "direction" : true,
+    "l_threshold" : 0.5,
+    "above" : false
+  },
+  "html_url" : "https://gist.github.com/e8c83080a16cd38781f7",
+  "created_at" : "2016-01-20T12:38:28Z",
+  "updated_at" : "2016-01-28T00:00:25Z",
+  "stars" : 0.0
+}, {
   "id" : "948e99b1800e81ad909a",
   "name" : "Atmospheric Slideshow",
   "owner" : "dycm8009",
@@ -52,8 +66,8 @@
   "uniforms" : { },
   "html_url" : "https://gist.github.com/1b4862e4e2050a3abebe",
   "created_at" : "2015-01-15T19:48:03Z",
-  "updated_at" : "2015-08-29T14:13:32Z",
-  "stars" : 1.0
+  "updated_at" : "2016-01-28T00:10:07Z",
+  "stars" : 2.0
 }, {
   "id" : "04fd9a7de4012cbb03f6",
   "name" : "crosshatch",
@@ -177,8 +191,8 @@
   },
   "html_url" : "https://gist.github.com/b86b90161503a0023231",
   "created_at" : "2014-05-25T01:24:39Z",
-  "updated_at" : "2015-12-18T16:20:34Z",
-  "stars" : 4.0
+  "updated_at" : "2016-01-28T00:09:47Z",
+  "stars" : 5.0
 }, {
   "id" : "ce9279de351984f0ad27",
   "name" : "Slide",
@@ -239,8 +253,8 @@
   },
   "html_url" : "https://gist.github.com/a070cbd69e2535e757f1",
   "created_at" : "2014-05-23T18:00:18Z",
-  "updated_at" : "2015-08-29T14:01:44Z",
-  "stars" : 1.0
+  "updated_at" : "2016-01-28T00:10:33Z",
+  "stars" : 2.0
 }, {
   "id" : "a830822b23e846e25d2d",
   "name" : "DreamyZoom",
@@ -333,8 +347,8 @@
   "uniforms" : { },
   "html_url" : "https://gist.github.com/b9f8e5675c647e615419",
   "created_at" : "2014-05-21T10:12:14Z",
-  "updated_at" : "2015-12-04T07:14:06Z",
-  "stars" : 1.0
+  "updated_at" : "2016-01-28T00:11:08Z",
+  "stars" : 2.0
 }, {
   "id" : "2a5fa2f77c883dd661f9",
   "name" : "colourDistance",
@@ -586,8 +600,8 @@
   },
   "html_url" : "https://gist.github.com/81c6f2e6fce88f9075d2",
   "created_at" : "2014-05-16T13:56:53Z",
-  "updated_at" : "2015-12-04T07:14:48Z",
-  "stars" : 1.0
+  "updated_at" : "2016-01-28T00:11:53Z",
+  "stars" : 2.0
 }, {
   "id" : "979934722820b5e715fa",
   "name" : "doorway",
