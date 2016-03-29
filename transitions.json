@@ -1,4 +1,14 @@
 [ {
+  "id" : "ae64014bc78e4ed8cf05",
+  "name" : "Paint",
+  "owner" : "AnastasiaDunbar",
+  "glsl" : "#ifdef GL_ES\nprecision highp float;\n#endif\nuniform sampler2D from, to;\nuniform float progress;\nuniform vec2 resolution;\nconst int waves = 4;\nfloat random (float x) {\n    return fract(sin(x)*1e4);\n}\nfloat paint(vec2 p, float sharp) {\n  float f = 0.;\n  for (float i = 0.; i < float(waves); i++) {\n    f += sin((p.x*mix(1.,7.,random(i))*5.)+random(i+4.2)+(progress*8.)+cos(progress*i*2.))*random(i+.53);\n  }\n  f /= float(waves)+4.;\n  f = clamp((f+((p.y-2.)+(progress*3.)))*sharp,0.,1.);\n  return f;\n}\nvoid main() {\n  vec2 p = gl_FragCoord.xy / resolution.xy;\n  //mix(texture2D(from, p), texture2D(to, p), progress)\n  float esp = 0.01;\n  float s = (paint(p-esp,20.)-paint(p,15.))*.4;\n  gl_FragColor = mix(texture2D(from, p), texture2D(to, p), paint(p,50.))+s;\n}",
+  "uniforms" : { },
+  "html_url" : "https://gist.github.com/ae64014bc78e4ed8cf05",
+  "created_at" : "2016-03-28T20:38:00Z",
+  "updated_at" : "2016-03-28T20:39:43Z",
+  "stars" : 0.0
+}, {
   "id" : "e8c83080a16cd38781f7",
   "name" : "luminance melt",
   "owner" : "0gust1",
