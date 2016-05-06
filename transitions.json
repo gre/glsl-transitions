@@ -1,4 +1,14 @@
 [ {
+  "id" : "9b7cce648a1cd777c6a3206bce7cd814",
+  "name" : "warpfade",
+  "owner" : "peterekepeter",
+  "glsl" : "#ifdef GL_ES\nprecision highp float;\n#endif\nuniform sampler2D from, to;\nuniform float progress;\nuniform vec2 resolution;\n\nvoid main() {\n  float x = progress;\n  vec2 p = gl_FragCoord.xy / resolution.xy;\n  x=smoothstep(.0,1.0,(x*2.0+p.x-1.0));\n  gl_FragColor = mix(texture2D(from, (p-.5)*(1.-x)+.5), texture2D(to, (p-.5)*x+.5), progress);\n}",
+  "uniforms" : { },
+  "html_url" : "https://gist.github.com/9b7cce648a1cd777c6a3206bce7cd814",
+  "created_at" : "2016-05-05T09:57:57Z",
+  "updated_at" : "2016-05-05T09:58:11Z",
+  "stars" : 0.0
+}, {
   "id" : "ae64014bc78e4ed8cf05",
   "name" : "Film burn",
   "owner" : "AnastasiaDunbar",
