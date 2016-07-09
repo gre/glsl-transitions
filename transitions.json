@@ -1,4 +1,14 @@
 [ {
+  "id" : "1ff3305d7f290c306d52c3450b101a25",
+  "name" : "Reveal",
+  "owner" : "naso",
+  "glsl" : "#ifdef GL_ES\nprecision highp float;\n#endif\nuniform sampler2D to, from;\nuniform float progress;\nuniform vec2 resolution;\n\nvoid main() {\n  vec2 p = gl_FragCoord.xy / resolution.xy;\n  vec4 a = texture2D(from, p); //vec4(0.0, 0.0, 0.0, 0.0);\n  vec4 b = texture2D(to, p);\n  gl_FragColor = mix(a, b, step(1.0 - p.x, progress));\n}",
+  "uniforms" : { },
+  "html_url" : "https://gist.github.com/1ff3305d7f290c306d52c3450b101a25",
+  "created_at" : "2016-07-08T10:32:51Z",
+  "updated_at" : "2016-07-08T14:15:31Z",
+  "stars" : 1.0
+}, {
   "id" : "714f095318834f4d2375de872c53af1e",
   "name" : "PuzzleRight",
   "owner" : "JustKirillS",
