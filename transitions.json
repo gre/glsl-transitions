@@ -1,4 +1,14 @@
 [ {
+  "id" : "f63e3009c1143950dee9063c3b83fb88",
+  "name" : "Circle Crop",
+  "owner" : "fkuteken",
+  "glsl" : "#ifdef GL_ES\nprecision highp float;\n#endif\nuniform sampler2D from, to;\nuniform float progress;\nuniform vec2 resolution;\n\nfloat maxRadius = resolution.x + resolution.y;\n\nvoid main() {\n  vec2 p = gl_FragCoord.xy / resolution.xy;\n  \n  float distX = gl_FragCoord.x - resolution.x / 2.0;\n  float distY = gl_FragCoord.y - resolution.y / 2.0;\n  float dist = sqrt(distX * distX + distY * distY);\n  \n  float step = 2.0 * abs(progress - 0.5);\n  step = step * step * step;\n  \n  if (dist < step * maxRadius)\n  {\n    if (progress < 0.5)\n      gl_FragColor = texture2D(from, p);\n    else\n      gl_FragColor = texture2D(to, p);\n  }\n  else\n    gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);\n}",
+  "uniforms" : { },
+  "html_url" : "https://gist.github.com/f63e3009c1143950dee9063c3b83fb88",
+  "created_at" : "2016-07-12T18:04:53Z",
+  "updated_at" : "2016-07-12T19:07:57Z",
+  "stars" : 0.0
+}, {
   "id" : "1ff3305d7f290c306d52c3450b101a25",
   "name" : "Reveal",
   "owner" : "naso",
