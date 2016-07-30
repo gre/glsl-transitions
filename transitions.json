@@ -1,4 +1,14 @@
 [ {
+  "id" : "ad095dac1054de1c796418f992f0f8a0",
+  "name" : "wipeUp",
+  "owner" : "homerjam",
+  "glsl" : "#ifdef GL_ES\nprecision highp float;\n#endif\nuniform sampler2D from, to;\nuniform float progress;\nuniform vec2 resolution;\n\nvoid main() {\n  vec2 p = gl_FragCoord.xy / resolution.xy;\n  vec4 a = texture2D(from, p);\n  vec4 b = texture2D(to, p);\n  gl_FragColor = mix(a, b, step(0.0 + p.y, progress));\n}",
+  "uniforms" : { },
+  "html_url" : "https://gist.github.com/ad095dac1054de1c796418f992f0f8a0",
+  "created_at" : "2016-07-29T13:49:32Z",
+  "updated_at" : "2016-07-29T13:52:55Z",
+  "stars" : 0.0
+}, {
   "id" : "f63e3009c1143950dee9063c3b83fb88",
   "name" : "Circle Crop",
   "owner" : "fkuteken",
