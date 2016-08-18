@@ -231,7 +231,7 @@
 }, {
   "id" : "9b99fc01fd5705008a5b",
   "name" : "Glitch Memories",
-  "owner" : "niseh",
+  "owner" : "natewave",
   "glsl" : "#ifdef GL_ES\nprecision highp float;\n#endif\nuniform sampler2D from, to;\nuniform float progress;\nuniform vec2 resolution;\n\nvoid glitch_memories(sampler2D pic) {\n  vec2 p = gl_FragCoord.xy / resolution.xy;\n  vec2 block = floor(gl_FragCoord.xy / vec2(16));\n  vec2 uv_noise = block / vec2(64);\n  uv_noise += floor(vec2(progress) * vec2(1200.0, 3500.0)) / vec2(64);\n  \n  float block_thresh = pow(fract(progress * 1200.0), 2.0) * 0.2;\n  float line_thresh = pow(fract(progress * 2200.0), 3.0) * 0.7;\n  vec2 red = p, green = p, blue = p, o = p;\n  vec2 dist = (fract(uv_noise) - 0.5) * 0.3;\n  red += dist * 0.1;\n  green += dist * 0.2;\n  blue += dist * 0.125;\n  \n  gl_FragColor.r = texture2D(pic, red).r;\n  gl_FragColor.g = texture2D(pic, green).g;\n  gl_FragColor.b = texture2D(pic, blue).b;\n  gl_FragColor.a = 1.0;\n\n}\n\nvoid main(void)\n{\n  float smoothed = smoothstep(0., 1., progress);\n  if( ( smoothed < 0.4 && smoothed > 0.1) ) {\n      glitch_memories(from);\n  } else if ((smoothed > 0.6 && smoothed < 0.9) ) {\n      glitch_memories(to);\n  } else {\n    vec2 p = gl_FragCoord.xy / resolution.xy;\n    gl_FragColor = mix(texture2D(from, p), texture2D(to, p), progress);\n  }\n}",
   "uniforms" : { },
   "html_url" : "https://gist.github.com/9b99fc01fd5705008a5b",
