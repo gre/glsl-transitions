@@ -1,4 +1,17 @@
 [ {
+  "id" : "5a66e633d36532aa4743a73d20f20304",
+  "name" : "water_drop",
+  "owner" : "PawelPlociennik",
+  "glsl" : "#ifdef GL_ES\nprecision highp float;\n#endif\n \n// General parameters\nuniform sampler2D from;\nuniform sampler2D to;\nuniform float progress;\nuniform vec2 resolution;\n \nuniform float amplitude;\nuniform float speed;\n \nvoid main()\n{\n  vec2 p = gl_FragCoord.xy / resolution.xy;\n  vec2 dir = p - vec2(.5);\n  float dist = length(dir);\n\n  if (dist > progress) {\n    gl_FragColor = mix(texture2D(from, p), texture2D(to, p), progress);\n  } else {\n    vec2 offset = dir * sin(dist * amplitude - progress * speed);\n    gl_FragColor = mix(texture2D(from, p + offset), texture2D(to, p), progress);\n  }\n}",
+  "uniforms" : {
+    "amplitude" : 30.0,
+    "speed" : 30.0
+  },
+  "html_url" : "https://gist.github.com/5a66e633d36532aa4743a73d20f20304",
+  "created_at" : "2016-09-16T10:24:45Z",
+  "updated_at" : "2016-09-16T12:35:36Z",
+  "stars" : 0.0
+}, {
   "id" : "597954724feda999b2cf2b5518d3edec",
   "name" : "StereoViewer Toy",
   "owner" : "tschundler",
